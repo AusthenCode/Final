@@ -1,8 +1,25 @@
 {
   "dependencies": {
-    "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "mongodb": "^6.16.0",
-    "mongoose": "^8.14.0"
-  }
+    "mongod": "^2.0.0",
+    "mongoose": "^8.14.1"
+  },
+  "name": "final",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AusthenCode/Final.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AusthenCode/Final/issues"
+  },
+  "homepage": "https://github.com/AusthenCode/Final#readme",
+  "description": ""
 }

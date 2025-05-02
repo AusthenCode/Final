@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const app = express();
@@ -65,6 +66,29 @@ app.delete('/api/jsonBlob/:id', (req, res) => {
         .then(() => res.json({ message: 'Pet deleted successfully!' }))
         .catch(err => res.status(500).send('Error deleting pet data.'));
 });
+
+mongoose.connect('mongodb://localhost:27017/App');
+
+const schema = new mongoose.Schema({
+    name: String,
+    email: String,
+    age: Number
+});
+
+const User = mongoose.model('User', schema);
+
+app.post('/Users', async (req, res) => {
+    console.log('here')
+    const user = new User(req.body);
+    await user.save();
+    res.send(user);
+});
+
+app.get('/Users', async (req, res) => {
+    const users = await User.find();
+    res.json(users);
+});
+
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
