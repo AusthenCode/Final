@@ -9,7 +9,7 @@
 <body>
     <h1>Pet Shelter</h1>
 
-    <form id="petForm">
+    <form action='/Pets' id="petForm">
         <input type="text" id="name" placeholder="Pet Name" required>
         <input type="text" id="breed" placeholder="Breed" required>
         <input type="text" id="sex" placeholder="Sex" required>
@@ -23,7 +23,7 @@
 
     <script>
 function loadPets() {
-    fetch('/api/jsonBlob')
+    fetch('/api/pets')
         .then(response => response.json())
         .then(pets => {
             const petCardsContainer = document.getElementById('petCards');
@@ -38,12 +38,12 @@ function loadPets() {
                     <p><strong>Sex:</strong> ${pet.sex}</p>
                     <p><strong>Age:</strong> ${pet.age}</p>
                     <p><strong>About:</strong> ${pet.about}</p>
-                    <button class="deleteBtn" data-id="${pet.id}">Delete Pet</button>
-                    <button onclick="viewDetails('${pet.id}')">View Details</button>
+                    <button class="deleteBtn" data-id="${pet._id}">Delete Pet</button>
+                    <button onclick="viewDetails('${pet._id}')">View Details</button>
                 `;
 
                 card.querySelector('.deleteBtn').addEventListener('click', function() {
-                    const petId = pet.id;
+                    const petId = pet._id;
                     deletePet(petId);
                 });
 
@@ -56,7 +56,7 @@ function loadPets() {
 }
 
         function deletePet(petId) {
-            fetch(`/api/jsonBlob/${petId}`, {
+            fetch(`/api/pets/${petId}`, {
                 method: 'DELETE',
             })
             .then(response => response.json())
@@ -69,10 +69,10 @@ function loadPets() {
             });
         }
         function viewDetails(petId) {
-            fetch('/api/jsonBlob')
+            fetch('/api/pets')
                 .then(response => response.json())
                 .then(pets => {
-                    const pet = pets.find(p => p.id === petId);
+                    const pet = pets.find(p => p._id === petId);
                     if (pet) {
                     alert(`Name: ${pet.name}\nBreed: ${pet.breed}\nAge: ${pet.age}\nAbout: ${pet.about}`);
             }
@@ -92,8 +92,8 @@ document.getElementById('petForm').addEventListener('submit', function(event) {
         image: document.getElementById('image').value
     };
 
-    fetch('/api/jsonBlob', {
-        method: 'PUT',
+    fetch('/api/pets', {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
