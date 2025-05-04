@@ -1,8 +1,10 @@
-POST http://localhost:3000/Users
+POST http://localhost:3000/pets   
 Content-Type: application/json
 
 {
-  "name": "Dog",
-  "email": "test@email.com",
-  "age": 5
+"name": "Dog", "breed": "dog", "age": 5, "sex": "Male", "about": "BLA"
 }
+
+###
+
+GET http://localhost:3000/pets

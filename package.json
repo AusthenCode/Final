@@ -2,7 +2,8 @@
   "dependencies": {
     "express": "^5.1.0",
     "mongod": "^2.0.0",
-    "mongoose": "^8.14.1"
+    "mongoose": "^8.14.1",
+    "nodemon": "^3.1.10"
   },
   "name": "final",
   "version": "1.0.0",
