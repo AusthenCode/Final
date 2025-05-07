@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -6,6 +8,8 @@ const PORT = 3000;
 
 const Pet = require('./models/pet');
 const petRoute = require('./routes/pets');
+const commentRoute = require('./routes/comments');
+const userRoute= require('./routes/users');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -19,6 +23,8 @@ db.once('open',()=>{
 });
 
 app.use('/api/pets', petRoute);
+app.use('/api/pets/:petId/comments', commentRoute);
+app.use('/api/users', userRoute);
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/index.html'));
