@@ -1,12 +1,8 @@
-const express = require('express')
+const express = require('express');
+const jwt = require('jsonwebtoken');
 const router = express.Router();
 const Pet = require('../models/pet');
-
-function checkAuthentication(req,res,next){
-    req.user={id:7}
-    if(!authenticated) res.status(501).json('FAILED TO AUTHENTICATE')
-    else next();
-}
+const authenticateToken = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
     try {
@@ -17,8 +13,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', checkAuthentication, async (req, res) => {
-    console.log(req.user);
+router.post('/', authenticateToken, async (req, res) => {
     try {
         const { name, breed, sex, age, about, image } = req.body;
         const newPet = new Pet({ name, breed, sex, age, about, image });
@@ -29,10 +24,8 @@ router.post('/', checkAuthentication, async (req, res) => {
     }
 });
 
-router.delete('/:id', checkAuthentication,async (req, res) => {
+router.delete('/:id', authenticateToken, async (req, res) => {
     try {
-        //find document
-        //check if document.authorID!=req.user.ID res.status(501).json('You are not authorized to delete this document')
         await Pet.findByIdAndDelete(req.params.id);
         res.json({ message: 'Pet deleted successfully!' });
     } catch (error) {
