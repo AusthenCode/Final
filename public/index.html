@@ -8,6 +8,9 @@
 </head>
 <body>
     <h1>Pet Shelter</h1>
+    <a href="signin.html">
+        <button type="button">Login</button>
+    </a>
 
     <form action='/Pets' id="petForm">
         <input type="text" id="name" placeholder="Pet Name" required>
@@ -40,6 +43,12 @@ function loadPets() {
                     <p><strong>About:</strong> ${pet.about}</p>
                     <button class="deleteBtn" data-id="${pet._id}">Delete Pet</button>
                     <button onclick="viewDetails('${pet._id}')">View Details</button>
+                    <div class="comment" id="comment-${pet._id}"></div>
+
+                    <form class="comment-form" data-pet-id="${pet._id}">
+                        <input type="text" name="comment" placeholder="Write your Comment" required>
+                        <button type="submit">Submit Comment</button>
+                    </form>
                 `;
 
                 card.querySelector('.deleteBtn').addEventListener('click', function() {
@@ -48,6 +57,7 @@ function loadPets() {
                 });
 
                 petCardsContainer.appendChild(card);
+                loadComment(pet._id);
             });
         })
         .catch(error => {
@@ -55,7 +65,15 @@ function loadPets() {
         });
 }
 
-        function deletePet(petId) {
+async function loadComment(petId){
+            const res = await fetch(`/pets/${petId}/comment`);
+            const comments = await res.json();
+
+            const container = document.getElementById(`comments-${petId}`);
+            container.innerHTML = "<strong>Comments:</strong>" + comments.map(com => `<p>${com.text}</p>`.join(''));
+}
+
+function deletePet(petId) {
             fetch(`/api/pets/${petId}`, {
                 method: 'DELETE',
             })
@@ -67,18 +85,17 @@ function loadPets() {
             .catch(error => {
                 console.error('Error deleting pet:', error);
             });
-        }
-        function viewDetails(petId) {
+}
+function viewDetails(petId) {
             fetch('/api/pets')
                 .then(response => response.json())
                 .then(pets => {
                     const pet = pets.find(p => p._id === petId);
                     if (pet) {
                     alert(`Name: ${pet.name}\nBreed: ${pet.breed}\nAge: ${pet.age}\nAbout: ${pet.about}`);
-            }
-        });
 }
-
+});
+}
 
 document.getElementById('petForm').addEventListener('submit', function(event) {
     event.preventDefault();
