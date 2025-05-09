@@ -26,6 +26,7 @@ router.post('/', authenticateToken, async (req, res) => {
 
 router.delete('/:id', authenticateToken, async (req, res) => {
     try {
+        console.log('Attempting to delete pet with ID:', req.params.id);
         await Pet.findByIdAndDelete(req.params.id);
         res.json({ message: 'Pet deleted successfully!' });
     } catch (error) {

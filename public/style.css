@@ -104,11 +104,11 @@ form {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    width: 320px;
+    width: 25%;
 }
 
 form input, form textarea {
-    width: 100%;
+    width: 80%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -127,4 +127,9 @@ form button {
 
 form button:hover {
     background-color: #45a049;
+}
+
+.comment-form {
+    width: 85%;
+    top: 10px;
 }

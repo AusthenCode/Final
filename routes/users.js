@@ -14,7 +14,6 @@ router.post('/signup', async (req, res) => {
         if(existingUser) return res.status(400).json("Email already is in use");
 
         const newUser = new User({ name, password, email });
-        console.log(newUser);
         await newUser.save();
         res.json("User added successfully");
     }
@@ -46,9 +45,15 @@ router.post('/signin', async (req, res) => {
             return res.status(400).json("Incorrect email or password");
         }
 
-        const token = jwt.sign({userId: user._id, name: user.name}, JWT_SECRET, {expiresIn: '1h'});
+        const token = jwt.sign({userId: user._id, email: user.email}, JWT_SECRET, {expiresIn: '1h'});
 
-        res.json({token, message: 'Login Successful'});
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: false,
+            maxAge: 10000000000,
+        })
+
+        res.json({message: 'Login Successful'});
     }
     catch (err){
         console.log(err);

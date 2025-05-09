@@ -11,29 +11,52 @@
     <input type="text" id="name" name="name" placeholder="Name" required><br>
     <input type="email" id="email" name="email" placeholder="Email" required><br>
     <input type="password" id="password" name="password" placeholder="Password" required><br>
-    <button id="submit-btn"type="submit">Sign Up</button>
+    <button type="submit">Sign Up</button>
   </form>
+  <div id="error-msg"></div>
 
   <script>
-    document.getElementById('signup-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+//1. Create an event listener on Form submission / when the user clicks submit
+//2. Check the validity of the data
+//3. Send the email and password to server's signup API (use fetch/axios)
+//4. (on the server) verify that the email is not already registered, insert into mongodb, respond with success message
+//5. handle response: show error message or send user to signin page
+    document.getElementById('signup-form').addEventListener('submit', async function (event) {
+      event.preventDefault();
 
-    try {
-      const res = await fetch('/signup', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body:JSON.stringify({name, email, password})
-      });
-      const result = await res.json();
-      console.log('Response:', res)
-    }catch (error){
-      console.error('Error:', error);
-    }
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
 
-    });
+      if(!name || !email || !password){
+        document.getElementById('error-msg').textContent = "Please fill out the full form";
+        return;
+      }
+
+      try{
+        const response = await fetch('/api/users/signup', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({name,email,password})
+        });
+
+        const answer = await response.json();
+
+        if(!response.ok){
+          document.getElementById('error-msg').textContent = "Signup failed";
+        }
+        else{
+          window.location.href = '/signin.html';
+        }
+      }
+      catch (error){
+        document.getElementById('error-msg').textContent = "Server error we will fix" + error;
+      }
+    })
+
+//SIGN OUT
+//1. clear cookie (delete JWT) and redirect user to index page
+//2. IF NEEDED send signout request to server's signout API
   </script>
 </body>
 </html>

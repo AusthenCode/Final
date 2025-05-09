@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
@@ -13,6 +14,7 @@ const userRoute= require('./routes/users');
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
