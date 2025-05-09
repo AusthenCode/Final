@@ -4,3 +4,5 @@ YT doesnt allow videos over 15 minutes so I had to kind of abruptly end it, plea
 
 
 Austin Shelton -- Routes, CSS, HTML, JS
+https://youtu.be/EZAQeOCqhFA
+Once again sorry, but it wont let me install my jsonwebtoken or bcrpytjs to allow me to show the website.
