@@ -8,11 +8,50 @@
 <body>
   <h1>Sign In</h1>
   <form id="signin-form">
-    <input type="email" name="email" placeholder="Email" required><br>
-    <input type="password" name="password" placeholder="Password" required><br>
+    <input type="email" id="email" name="email" placeholder="Email" required><br>
+    <input type="password" id="password" name="password" placeholder="Password" required><br>
     <button type="submit">Sign In</button>
   </form>
+  <div id="error-msg"></div>
 
-  <script src="/js/auth.js"></script>
+  <script>
+
+//1. Create an event listener on Form submission / when the user clicks submit
+//2. Check the validity of the data
+//3. Send the email and password to server's signin API (use fetch/axios)
+//4. (on the server) verify that the email is already registered, check if password is correct, create JWT, respond with success message and JWT
+//5. handle the response: either show error message or store JWT in cookie (document.cookie='') and redirect user to user area
+
+    document.getElementById('signin-form').addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if(!email || !password) {
+        document.getElementById('error-msg').textContent = "Please enter an email or password"
+        return;
+      }
+
+      try{
+        const res = await fetch('/api/users/signin', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ email, password })
+        });
+        const ans = await res.json();
+
+        if(!res.ok){
+          document.getElementById('error-msg').textContent = "Failed to sign in";
+        }
+        else{
+          window.location.href = '/index.html';
+        }
+      }
+      catch(error){
+        document.getElementById('error-msg').textContent = "Error on the server" + error;
+      }
+    });
+  </script>
 </body>
 </html>
